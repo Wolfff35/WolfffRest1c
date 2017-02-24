@@ -4,8 +4,6 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -34,11 +32,7 @@ public class Fragment_task_list extends ListFragment {
     ArrayList<WTask> main_taskList;
     ArrayList<WUsers> main_userList;
 
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_task_item_options_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-    @Override
+     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
