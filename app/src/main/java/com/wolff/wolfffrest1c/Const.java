@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface Const {
     String BASE_URL = "http://13.10.12.10/v83_zadacha/odata/standard.odata/";
     String LOGIN = "wolf";
-    String PASSWORD = "1";
+    String PASSWORD = "4441";
  }
