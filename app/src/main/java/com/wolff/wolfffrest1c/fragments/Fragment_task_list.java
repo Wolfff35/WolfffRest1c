@@ -52,9 +52,7 @@ public class Fragment_task_list extends ListFragment {
         getListView().setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                listener.onTaskSelected(main_taskList.get(i).getGuid());
-                //Log.e("onItemClick","================================================================ i = "+i+" =      "+main_taskList.get(i).toString()+"; "+main_taskList.get(i).getName());
-
+                listener.onTaskSelected(main_taskList.get(i));
             }
         });
     }
@@ -92,6 +90,7 @@ public class Fragment_task_list extends ListFragment {
 
 
     public interface FragmentTaskListListener{
-    void onTaskSelected(String guid);
-}
+    void onTaskSelected(WTask task);
+
+    }
 }

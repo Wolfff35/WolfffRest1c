@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wolff.wolfffrest1c.R;
+import com.wolff.wolfffrest1c.objects.WTask;
 
 /**
  * Created by wolff on 16.02.2017.
@@ -22,13 +23,11 @@ public class Fragment_task_item extends Fragment {
     Boolean isNewTask = false;
     Boolean isModifiedTask = false;
     Boolean isEditTask = false;
-    String guid;
-
+    WTask main_taskItem;
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
           this.optionsMenu = menu;
         inflater.inflate(R.menu.fragment_task_item_options_menu, menu);
         super.onCreateOptionsMenu(optionsMenu, inflater);
-    //Log.e("onCreateOptionsMenu","onCreateOptionsMenu");
         setOptionsMenuItemVisibility();
     }
 
@@ -42,9 +41,8 @@ public class Fragment_task_item extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         savedInstanceState = this.getArguments();
         if (savedInstanceState != null) {
-            guid = savedInstanceState.getString("guid");
-            //Log.e("guid = ",""+guid);
-            if(guid.equalsIgnoreCase("NEW")) {
+            main_taskItem =(WTask)savedInstanceState.getSerializable("WTask");
+             if(main_taskItem==null) {
                 isNewTask=true;
                 isModifiedTask =false;
                 isEditTask = true;
@@ -53,20 +51,17 @@ public class Fragment_task_item extends Fragment {
 
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        //Log.e("onCreate","onCreate");
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //Log.e("onActivityCreated","onActivityCreated");
     }
-    public static Fragment_task_item newInstance(String guid){
-        //Log.e("newInstance","newInstance");
+    public static Fragment_task_item newInstance(WTask task){
 
         Fragment_task_item fragment = new Fragment_task_item();
         Bundle bundle = new Bundle();
-        bundle.putString("guid", guid);
+        bundle.putSerializable("WTask",task);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -74,7 +69,6 @@ public class Fragment_task_item extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task_item,container, false);
-        //Log.e("onCreateView","onCreateView");
 
         //       TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
  //       TextView tvDescribe = (TextView) view.findViewById(R.id.tvDescribe);
@@ -96,7 +90,6 @@ public class Fragment_task_item extends Fragment {
         return view;
     }
     public void setOptionsMenuItemVisibility(){
-        //Log.e("OPTMENU_VIS","SETTING VISIBILITY ");//+optionsMenu.toString());
         if(optionsMenu!=null) {
             MenuItem item_edit = optionsMenu.findItem(R.id.action_edit);
             item_edit.setVisible(!isEditTask);

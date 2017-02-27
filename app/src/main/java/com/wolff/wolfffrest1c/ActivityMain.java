@@ -25,6 +25,7 @@ import android.widget.Button;
 
 import com.wolff.wolfffrest1c.fragments.Fragment_task_item;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_list;
+import com.wolff.wolfffrest1c.objects.WTask;
 
 import static com.wolff.wolfffrest1c.R.id.fab;
 
@@ -49,7 +50,7 @@ public class ActivityMain extends AppCompatActivity
                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                //         .setAction("Action", null).show();
                 //передаем данные в фрагмент
-             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance("NEW");
+             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null);
              displayFragment(fragment_task_item);
 
             }
@@ -67,11 +68,7 @@ public class ActivityMain extends AppCompatActivity
 
         //#fragment
         fragment_task_list = new Fragment_task_list();
-        //fragment_task_item = new Fragment_task_item();
         displayFragment(fragment_task_list);
-        ///////////////////////////////
-
-        //options menu
 
     }
 
@@ -143,7 +140,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
     @Override
-    public void onTaskSelected(String guid) {
-        Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(guid);
+    public void onTaskSelected(WTask task) {
+        Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(task);
         displayFragment(fragment_task_item);    }
 }

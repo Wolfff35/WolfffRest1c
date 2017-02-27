@@ -1,12 +1,14 @@
 package com.wolff.wolfffrest1c.objects;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by wolff on 07.02.2017.
  */
 
-public class WTask extends WCatalog {
+public class WTask extends WCatalog implements Serializable{
+    private static final long serialVersionUID = 2163051469151804396L;
     private WUsers author;
     private WUsers programmer;
 
