@@ -109,4 +109,12 @@ public class WTask extends WCatalog implements Serializable{
     public void setDateClosed(Date dateClosed) {
         this.dateClosed = dateClosed;
     }
+
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
 }

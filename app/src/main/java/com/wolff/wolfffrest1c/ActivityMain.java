@@ -81,31 +81,6 @@ public class ActivityMain extends AppCompatActivity
             super.onBackPressed();
         }
     }
-//#optionsMenu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-      //  super.onCreateOptionsMenu(menu);
-      //  this.optionsMenu = menu;
-       // getMenuInflater().inflate(R.menu.fragment_task_item_options_menu, menu);
-        return true;
-    }
-
-   @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-       Log.e("MENU",""+id);
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    //-#optionsMenu
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

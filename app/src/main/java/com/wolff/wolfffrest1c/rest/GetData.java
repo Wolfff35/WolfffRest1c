@@ -27,7 +27,7 @@ public class GetData {
                 sb.append(line);
             }
             reader.close();
-            Log.e("GET",""+sb.toString());
+            //Log.e("GET",""+sb.toString());
             return sb.toString();
         } catch (Exception e) {
             Log.e("ERROR","WRONG PASS");
