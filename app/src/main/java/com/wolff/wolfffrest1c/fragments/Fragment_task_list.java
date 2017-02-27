@@ -53,7 +53,7 @@ public class Fragment_task_list extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 listener.onTaskSelected(main_taskList.get(i).getGuid());
-                Log.e("onItemClick","================================================================ i = "+i+" =      "+main_taskList.get(i).toString()+"; "+main_taskList.get(i).getName());
+                //Log.e("onItemClick","================================================================ i = "+i+" =      "+main_taskList.get(i).toString()+"; "+main_taskList.get(i).getName());
 
             }
         });
@@ -82,12 +82,12 @@ public class Fragment_task_list extends ListFragment {
        PostDataTask pdt = new PostDataTask();
         pdt.execute(ss2,"Catalog_Пользователи");
 */
-        InputStream inputStream = getResources().openRawResource(R.raw.patch_query_task2);
+   /*     InputStream inputStream = getResources().openRawResource(R.raw.patch_query_task2);
         String ss3 = convert.getStringFromInputStream(inputStream);
         PatchDataTask patchDataTask = new PatchDataTask();
         String dataVersion = "AAAAAAAARmw";
         patchDataTask.execute(ss3,"Catalog_Пользователи","f4f6d96a-f9ce-11e6-80cb-f2bd425ab9dd",dataVersion);
-
+*/
     }
 
 

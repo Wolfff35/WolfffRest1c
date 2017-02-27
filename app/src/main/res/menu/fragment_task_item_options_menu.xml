@@ -25,12 +25,4 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:icon="@drawable/ic_delete"
         android:visible="true"
         android:enabled="true" />
-    <item
-        android:id="@+id/action_add"
-        android:orderInCategory="100"
-        android:title="Добавить"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_add"
-        android:visible="true"
-        android:enabled="true" />
-</menu>
+ </menu>
