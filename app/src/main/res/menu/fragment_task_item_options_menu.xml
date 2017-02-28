@@ -18,6 +18,14 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:visible="true"
         android:enabled="true" />
     <item
+        android:id="@+id/action_undo"
+        android:orderInCategory="100"
+        android:title="Отмена"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_undo"
+        android:visible="true"
+        android:enabled="true" />
+    <item
         android:id="@+id/action_delete"
         android:orderInCategory="100"
         android:title="Удалить"

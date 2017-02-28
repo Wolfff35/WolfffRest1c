@@ -1,5 +1,6 @@
 package com.wolff.wolfffrest1c.tasks;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 import com.wolff.wolfffrest1c.rest.PostData;
@@ -9,10 +10,14 @@ import com.wolff.wolfffrest1c.rest.PostData;
  */
 
 public class PostDataTask extends AsyncTask<String,Void,String>{
-        @Override
+    private Context mContext;
+    public PostDataTask(Context context){
+        mContext=context;
+    }
+    @Override
         protected String doInBackground(String... params) {
             PostData postData = new PostData();
-            String data1C = postData.postDataToServer(params[0],params[1]);
+            String data1C = postData.postDataToServer(mContext,params[0],params[1]);
             return data1C;
         }
 

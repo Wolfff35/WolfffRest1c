@@ -60,8 +60,8 @@ public class Fragment_task_list extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GetDataTask getDataTask1 =new GetDataTask();
-        GetDataTask getDataTask2 =new GetDataTask();
+        GetDataTask getDataTask1 =new GetDataTask(getActivity().getApplicationContext());
+        GetDataTask getDataTask2 =new GetDataTask(getActivity().getApplicationContext());
         try {
             String data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/").get();
             JsonParser parser = new JsonParser();
@@ -70,8 +70,10 @@ public class Fragment_task_list extends ListFragment {
             String data1CSrv2 = getDataTask2.execute("Catalog_Tasks/").get();
             main_taskList=parser.getTaskListFromServerData(data1CSrv2,main_userList);
         } catch (InterruptedException e) {
+            Log.e("ERR"," = 1");
             e.printStackTrace();
         } catch (ExecutionException e) {
+            Log.e("ERR"," = 2");
             e.printStackTrace();
         }
         Convert convert = new Convert();

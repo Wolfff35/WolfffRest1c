@@ -1,24 +1,16 @@
 package com.wolff.wolfffrest1c.rest;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import static com.wolff.wolfffrest1c.Const.LOGIN;
-import static com.wolff.wolfffrest1c.Const.PASSWORD;
+import static com.wolff.wolfffrest1c.Const.BASE_URL;
 
 
 /**
@@ -26,14 +18,27 @@ import static com.wolff.wolfffrest1c.Const.PASSWORD;
  */
 
 public class RESTInvoker {
-    RESTInvoker(){}
+    SharedPreferences sp;
+    public RESTInvoker(){}
 
-    public HttpURLConnection getConnection(URL url) throws IOException {
+    public HttpURLConnection getConnection(Context context,URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        String authString = LOGIN + ":" + PASSWORD;
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
+        //String authString = LOGIN + ":" + PASSWORD;
+        Log.e("LOGIN = ",""+sp.getString("serverLogin","wolf"));
+        Log.e("PASS = ",""+sp.getString("serverPassword","1"));
+        String authString = sp.getString("serverLogin","wolf")+ ":" + sp.getString("serverPassword","1");
         String authStringEnc;
         authStringEnc = new String(Base64.encode(authString.getBytes(),0));
         urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
         return urlConnection;
+    }
+    public String getBaseUrl(Context context){
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
+       // String lUrl = "http://"+sp.getString("serverName","13.10.12.10")+"/"+sp.getString("baseName","v83_zadacha")+BASE_URL;
+        String lUrl = "http://"+"13.10.12.10"+"/"+"v83_zadacha"+BASE_URL;
+        //String lUrl = "http://"+"13.10.12.11"+"/"+"v83_zadacha"+BASE_URL;
+        Log.e("getBaseUrl = ",""+lUrl);
+        return lUrl;
     }
 }

@@ -1,5 +1,6 @@
 package com.wolff.wolfffrest1c.rest;
 
+import android.content.Context;
 import android.util.Log;
 
 
@@ -11,21 +12,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.wolff.wolfffrest1c.Const.BASE_URL;
+import static com.wolff.wolfffrest1c.Const.CONNECT_TIMEOUT;
+import static com.wolff.wolfffrest1c.Const.READ_TIMEOUT;
 
 /**
  * Created by wolff on 22.02.2017.
  */
 
 public class PostData {
-    public String postDataToServer(String data,String catalog){
+    public String postDataToServer(Context context, String data, String catalog){
        int responseCode=0;
         HttpURLConnection conn=null;
         RESTInvoker restInvoker = new RESTInvoker();
         try {
-             URL url = new URL(BASE_URL+catalog);
-            conn = restInvoker.getConnection(url);
-            conn.setReadTimeout(10000);
-            conn.setConnectTimeout(15000);
+             URL url = new URL(restInvoker.getBaseUrl(context)+catalog);
+            conn = restInvoker.getConnection(context,url);
+            conn.setReadTimeout(READ_TIMEOUT);
+            conn.setConnectTimeout(CONNECT_TIMEOUT);
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             conn.setDoInput(true);

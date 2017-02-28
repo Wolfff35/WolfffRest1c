@@ -23,9 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.wolff.wolfffrest1c.fragments.Fragment_preference;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_item;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_list;
 import com.wolff.wolfffrest1c.objects.WTask;
+import com.wolff.wolfffrest1c.rest.RESTInvoker;
+import com.wolff.wolfffrest1c.tasks.GetDataTask;
+
+import java.util.concurrent.ExecutionException;
 
 import static com.wolff.wolfffrest1c.R.id.fab;
 
@@ -33,6 +38,7 @@ public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,Fragment_task_list.FragmentTaskListListener {
 
     Fragment_task_list fragment_task_list;
+    Fragment_preference fragment_preferences;
     FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +46,7 @@ public class ActivityMain extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //ПРОВЕРЯЕМ КОННЕКТ ЕСЛИ НЕТУ - ОТКРЫВАЕМ НАСТРОЙКИ
 
         //#fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -67,8 +73,34 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //#fragment
+        fragment_preferences = new Fragment_preference();
         fragment_task_list = new Fragment_task_list();
-        displayFragment(fragment_task_list);
+        boolean isConnect = false;
+            GetDataTask getDataTask1 =new GetDataTask(getApplicationContext());
+        Log.e("TEST","1");
+        try {
+            String data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/").get();
+            if(data1CSrv1!=null) {
+                Log.e("TEST","2 - "+data1CSrv1);
+                isConnect = true;
+            }else{
+                Log.e("TEST","3");
+                isConnect=false;
+            }
+        } catch (InterruptedException e) {
+            Log.e("TEST","4");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.e("TEST","5");
+            e.printStackTrace();
+        }
+          if(isConnect){
+            displayFragment(fragment_task_list);
+        }else {
+            displayFragment(fragment_preferences);
+
+        }
+
 
     }
 
@@ -91,6 +123,7 @@ public class ActivityMain extends AppCompatActivity
         if (id == R.id.nav_tasks) {
             displayFragment(fragment_task_list);
          } else if (id == R.id.nav_settings) {
+            displayFragment(fragment_preferences);
 
         } else if (id == R.id.nav_exit) {
 

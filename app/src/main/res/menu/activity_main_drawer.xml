@@ -7,23 +7,17 @@
             android:icon="@drawable/ic_menu_tasks"
             android:title="Задачи"
             android:checked="true" />
-     </group>
-
-    <item android:title="Прочее">
-        <menu>
-            <item
-                android:id="@+id/nav_settings"
-                android:icon="@drawable/ic_menu_settings"
-                android:title="Настройки" />
-            <item
-                android:id="@+id/nav_exit"
-                android:icon="@drawable/ic_menu_exit"
-                android:title="Выход" />
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_menu_info"
-                android:title="О программе" />
-        </menu>
-    </item>
-
-</menu>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="Настройки" />
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_menu_exit"
+            android:title="Выход" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_menu_info"
+            android:title="О программе" />
+    </group>
+  </menu>

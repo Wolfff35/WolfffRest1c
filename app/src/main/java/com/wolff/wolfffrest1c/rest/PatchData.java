@@ -1,5 +1,6 @@
 package com.wolff.wolfffrest1c.rest;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
@@ -10,21 +11,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.wolff.wolfffrest1c.Const.BASE_URL;
+import static com.wolff.wolfffrest1c.Const.CONNECT_TIMEOUT;
+import static com.wolff.wolfffrest1c.Const.READ_TIMEOUT;
 
 /**
  * Created by wolff on 23.02.2017.
  */
 
 public class PatchData {
-         public String patchDataOnServer(String data,String catalog,String guid,String dataVersion){
+         public String patchDataOnServer(Context context, String data, String catalog, String guid, String dataVersion){
             int responseCode=0;
             HttpURLConnection conn=null;
             RESTInvoker restInvoker = new RESTInvoker();
             try {
-                URL url = new URL(BASE_URL+catalog+"(guid'"+guid+"')?$format=json");
-                conn = restInvoker.getConnection(url);
-                conn.setReadTimeout(10000);
-                conn.setConnectTimeout(15000);
+                URL url = new URL(restInvoker.getBaseUrl(context)+catalog+"(guid'"+guid+"')?$format=json");
+                conn = restInvoker.getConnection(context,url);
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECT_TIMEOUT);
                 conn.setRequestMethod("PATCH");
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
