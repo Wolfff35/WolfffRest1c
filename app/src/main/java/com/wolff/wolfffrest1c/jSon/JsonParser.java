@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.wolff.wolfffrest1c.Const.DATE_FORMAT_STR;
+
 /**
  * Created by wolff on 22.02.2017.
  */
@@ -36,10 +38,11 @@ public class JsonParser {
                                             obj.getString("Содержание"),
                                             obj.getString("Примечание"),
                                             obj.getBoolean("фЗавершена"),
-                                            convert.getDateFromString(obj.getString("ДатаЗавершения")),
+                                            convert.getDateFromString(obj.getString("ДатаЗавершения"),DATE_FORMAT_STR),
                                             obj.getBoolean("фПринятаВРаботу"),
-                                            convert.getDateFromString(obj.getString("ДатаПринятияВРаботу")),
-                                            convert.getDateFromString(obj.getString("ДатаСоздания")));
+                                            convert.getDateFromString(obj.getString("ДатаПринятияВРаботу"),DATE_FORMAT_STR),
+                                            convert.getDateFromString(obj.getString("ДатаСоздания"),DATE_FORMAT_STR),
+                                            obj.getBoolean("DeletionMark"));
                 temp.add(newTask);
             }
         } catch (JSONException e) {

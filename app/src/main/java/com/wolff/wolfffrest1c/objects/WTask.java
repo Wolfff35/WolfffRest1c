@@ -25,10 +25,11 @@ public class WTask extends WCatalog implements Serializable{
 
     public WTask(){
     }
-    public WTask(String guid, String id, String name,WUsers author,WUsers programmer,String text,String ps,boolean isClosed,Date dateClosed, boolean isInWork,Date dateInWork,Date dateCreate){
+    public WTask(String guid, String id, String name,WUsers author,WUsers programmer,String text,String ps,boolean isClosed,Date dateClosed, boolean isInWork,Date dateInWork,Date dateCreate,boolean deletionMark){
         this.setGuid(guid);
         this.setId(id);
         this.setName(name);
+        this.setDeletionMark(deletionMark);
 
         this.author=author;
         this.programmer=programmer;
@@ -45,7 +46,29 @@ public class WTask extends WCatalog implements Serializable{
         this.dateCreate = dateCreate;
 
     }
+    public WTask(String name,WUsers author,WUsers programmer,String text,String ps,boolean isInWork,Date dateInWork,Date dateCreate){
 
+        // NEW TASK
+        this.setGuid(null);
+        this.setId(null);
+        this.setName(name);
+        this.setDeletionMark(false);
+
+        this.author=author;
+        this.programmer=programmer;
+
+        this.text = text;
+        this.ps = ps;
+
+        this.isClosed=false;
+        this.dateClosed=null;
+
+        this.isInWork = isInWork;
+        this.dateInWork = dateInWork;
+
+        this.dateCreate = dateCreate;
+
+    }
     public String getPs() {
         return ps;
     }

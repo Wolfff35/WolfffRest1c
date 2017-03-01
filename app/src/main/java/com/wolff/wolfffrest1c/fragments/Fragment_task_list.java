@@ -2,7 +2,9 @@ package com.wolff.wolfffrest1c.fragments;
 
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import com.wolff.wolfffrest1c.tasks.GetDataTask;
 import com.wolff.wolfffrest1c.tasks.PatchDataTask;
 import com.wolff.wolfffrest1c.tasks.PostDataTask;
 import com.wolff.wolfffrest1c.tools.Convert;
+import com.wolff.wolfffrest1c.tools.FormatData;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ public class Fragment_task_list extends ListFragment {
     TaskListAdapter taskListAdapter;
     ArrayList<WTask> main_taskList;
     ArrayList<WUsers> main_userList;
-
+    WUsers main_author;
      @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -52,7 +55,7 @@ public class Fragment_task_list extends ListFragment {
         getListView().setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                listener.onTaskSelected(main_taskList.get(i));
+                listener.onTaskSelected(main_taskList.get(i),main_author);
             }
         });
     }
@@ -62,19 +65,20 @@ public class Fragment_task_list extends ListFragment {
         super.onCreate(savedInstanceState);
         GetDataTask getDataTask1 =new GetDataTask(getActivity().getApplicationContext());
         GetDataTask getDataTask2 =new GetDataTask(getActivity().getApplicationContext());
+        SharedPreferences prefer =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         try {
             String data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/").get();
             JsonParser parser = new JsonParser();
             main_userList=parser.getUserListFromServerData(data1CSrv1);
+            FormatData formatData = new FormatData();
+            main_author = formatData.getCurrentUser(main_userList,prefer.getString("serverLogin",""));
 
             String data1CSrv2 = getDataTask2.execute("Catalog_Tasks/").get();
             main_taskList=parser.getTaskListFromServerData(data1CSrv2,main_userList);
         } catch (InterruptedException e) {
             Log.e("ERR"," = 1");
-            e.printStackTrace();
         } catch (ExecutionException e) {
             Log.e("ERR"," = 2");
-            e.printStackTrace();
         }
         Convert convert = new Convert();
  /*       InputStream is = getResources().openRawResource(R.raw.post_query_user);
@@ -82,7 +86,7 @@ public class Fragment_task_list extends ListFragment {
        PostDataTask pdt = new PostDataTask();
         pdt.execute(ss2,"Catalog_Пользователи");
 */
-   /*     InputStream inputStream = getResources().openRawResource(R.raw.patch_query_task2);
+   /*     InputStream inputStream = getResources().openRawResource(R.raw.patch_query_task);
         String ss3 = convert.getStringFromInputStream(inputStream);
         PatchDataTask patchDataTask = new PatchDataTask();
         String dataVersion = "AAAAAAAARmw";
@@ -92,7 +96,7 @@ public class Fragment_task_list extends ListFragment {
 
 
     public interface FragmentTaskListListener{
-    void onTaskSelected(WTask task);
+    void onTaskSelected(WTask task, WUsers author);
 
     }
 }

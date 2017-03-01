@@ -1,16 +1,16 @@
 <entry>
 <category term="StandardODATA.Catalog_Пользователи" scheme="http://schemas.microsoft.com/ado/2007/08/dataservices/scheme"/>
 <title type="text"/>
-<updated>2014-02-14T12:05:55</updated>
+<updated>%1$s</updated>
 <author/>
 <summary/>
 <content type="application/xml">
 <m:properties xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
-<d:Description>NEWWW</d:Description>
-<d:фПользователь>true</d:фПользователь>
-<d:фПрограммист>true</d:фПрограммист>
-<d:УникальныйИД>NEWWWWWWWWWWWWWWWW</d:УникальныйИД>
-<d:фБог>false</d:фБог>
+<d:Description>%2$s</d:Description>
+<d:фПользователь>%3$s</d:фПользователь>
+<d:фПрограммист>%4$s</d:фПрограммист>
+<d:УникальныйИД>%5$s</d:УникальныйИД>
+<d:фБог>%6$s</d:фБог>
 </m:properties>
 </content>
 </entry>

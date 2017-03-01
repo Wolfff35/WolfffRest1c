@@ -17,6 +17,7 @@ import android.widget.EditText;
 
 import com.wolff.wolfffrest1c.R;
 import com.wolff.wolfffrest1c.objects.WTask;
+import com.wolff.wolfffrest1c.objects.WUsers;
 
 
 /**
@@ -61,12 +62,12 @@ public class Fragment_task_item extends Fragment {
                 setFormElementVisibility();
                 setOptionsMenuItemVisibility();
                 break;
+            case R.id.action_undo:
+                break;
             case R.id.action_save:
                 Log.e("MENU FRAGM","SAVE");
                 break;
-            case R.id.action_undo:
-                break;
-            default:
+             default:
                 Log.e("MENU FRAGM","DEFAULT");
                 break;
         }
@@ -104,11 +105,12 @@ public class Fragment_task_item extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-    public static Fragment_task_item newInstance(WTask task){
+    public static Fragment_task_item newInstance(WTask task, WUsers author){
 
         Fragment_task_item fragment = new Fragment_task_item();
         Bundle bundle = new Bundle();
         bundle.putSerializable("WTask",task);
+        bundle.putSerializable("WUsers",author);
         fragment.setArguments(bundle);
         return fragment;
     }

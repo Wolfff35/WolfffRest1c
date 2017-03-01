@@ -15,14 +15,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+
 /**
  * Created by wolff on 23.02.2017.
  */
 
 public class Convert {
-    public Date getDateFromString(String strDate){
+    public Date getDateFromString(String strDate,String strFormat){
         //2017-02-02T15:30:00
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+        DateFormat format = new SimpleDateFormat(strFormat, Locale.ENGLISH);
         Date date = null;
         try {
             date = format.parse(strDate);
@@ -40,6 +41,13 @@ public WUsers getUserByGuid(String guid, ArrayList<WUsers> users){
     }
     return null;
 }
+    public String dateToString(Date date,String strFormat){
+        //return DateFormat.getDateTimeInstance().format(date);
+        DateFormat format = new SimpleDateFormat(strFormat, Locale.ENGLISH);
+        String strDate = format.format(date);
+        return strDate;
+
+    }
     public String getStringFromInputStream(InputStream is){
         BufferedReader r = new BufferedReader(new InputStreamReader(is));
         StringBuilder total = new StringBuilder();

@@ -22,14 +22,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.wolff.wolfffrest1c.fragments.Fragment_preference;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_item;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_list;
 import com.wolff.wolfffrest1c.objects.WTask;
+import com.wolff.wolfffrest1c.objects.WUsers;
 import com.wolff.wolfffrest1c.rest.RESTInvoker;
 import com.wolff.wolfffrest1c.tasks.GetDataTask;
+import com.wolff.wolfffrest1c.tasks.PostDataTask;
+import com.wolff.wolfffrest1c.tools.Convert;
+import com.wolff.wolfffrest1c.tools.FormatData;
 
+import org.json.JSONObject;
+
+import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 
 import static com.wolff.wolfffrest1c.R.id.fab;
@@ -46,7 +54,6 @@ public class ActivityMain extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //ПРОВЕРЯЕМ КОННЕКТ ЕСЛИ НЕТУ - ОТКРЫВАЕМ НАСТРОЙКИ
 
         //#fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -56,7 +63,7 @@ public class ActivityMain extends AppCompatActivity
                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                //         .setAction("Action", null).show();
                 //передаем данные в фрагмент
-             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null);
+             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null,null);
              displayFragment(fragment_task_item);
 
             }
@@ -75,32 +82,30 @@ public class ActivityMain extends AppCompatActivity
         //#fragment
         fragment_preferences = new Fragment_preference();
         fragment_task_list = new Fragment_task_list();
-        boolean isConnect = false;
-            GetDataTask getDataTask1 =new GetDataTask(getApplicationContext());
-        Log.e("TEST","1");
-        try {
-            String data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/").get();
-            if(data1CSrv1!=null) {
-                Log.e("TEST","2 - "+data1CSrv1);
-                isConnect = true;
-            }else{
-                Log.e("TEST","3");
-                isConnect=false;
-            }
-        } catch (InterruptedException e) {
-            Log.e("TEST","4");
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            Log.e("TEST","5");
-            e.printStackTrace();
-        }
-          if(isConnect){
+
+        //ПРОВЕРЯЕМ КОННЕКТ ЕСЛИ НЕТУ - ОТКРЫВАЕМ НАСТРОЙКИ
+        RESTInvoker restInvoker = new RESTInvoker();
+        boolean isConnect = restInvoker.testConnectionIsGood(getApplicationContext());
+        Toast toast;
+        if(isConnect){
+            toast = Toast.makeText(getApplicationContext(),"Подключение к серверу успешно",Toast.LENGTH_LONG);
+            toast.show();
             displayFragment(fragment_task_list);
         }else {
+            toast = Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу. Проверьте настройки",Toast.LENGTH_LONG);
+            toast.show();
             displayFragment(fragment_preferences);
-
         }
 
+        //==================================================================================================
+        Convert convert = new Convert();
+        FormatData formatData = new FormatData();
+        InputStream is = getResources().openRawResource(R.raw.post_query_user);
+        String ss1 = convert.getStringFromInputStream(is);
+        //ss2 = formatData.format_user_post(ss2,new WUsers("REFFFF","IDDDDDD","NAMMMME"));
+        //String ss2 = formatData.format_task_post(ss1, new WTask("NAMME",))
+        //PostDataTask pdt = new PostDataTask(getApplicationContext());
+       // pdt.execute(ss2,"Catalog_Пользователи");
 
     }
 
@@ -112,6 +117,21 @@ public class ActivityMain extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+             case R.id.action_undo:
+                displayFragment(fragment_task_list);
+                break;
+            default:
+                Log.e("MENU FRAGM","DEFAULT MAIN");
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -148,7 +168,7 @@ public class ActivityMain extends AppCompatActivity
     }
 
     @Override
-    public void onTaskSelected(WTask task) {
-        Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(task);
+    public void onTaskSelected(WTask task,WUsers author) {
+        Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(task,author);
         displayFragment(fragment_task_item);    }
 }

@@ -6,9 +6,13 @@ import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 
+import com.wolff.wolfffrest1c.jSon.JsonParser;
+import com.wolff.wolfffrest1c.tasks.GetDataTask;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 import static com.wolff.wolfffrest1c.Const.BASE_URL;
 
@@ -40,5 +44,21 @@ public class RESTInvoker {
         //String lUrl = "http://"+"13.10.12.11"+"/"+"v83_zadacha"+BASE_URL;
         Log.e("getBaseUrl = ",""+lUrl);
         return lUrl;
+    }
+
+    public boolean testConnectionIsGood(Context context){
+        GetDataTask getDataTask = new GetDataTask(context);
+        boolean isConn = false;
+        try {
+            String data1CSrv1 = getDataTask.execute("Catalog_Пользователи/").get();
+            if(data1CSrv1!=null) {
+                isConn = true;
+            }
+        } catch (InterruptedException e) {
+            isConn=false;
+        } catch (ExecutionException e) {
+            isConn=false;
+        }
+        return isConn;
     }
 }

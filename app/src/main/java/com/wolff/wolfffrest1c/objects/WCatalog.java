@@ -8,6 +8,15 @@ public class WCatalog {
     private String guid;
     private String id;
     private String name;
+    private boolean deletionMark;
+
+    public boolean isDeletionMark() {
+        return deletionMark;
+    }
+
+    public void setDeletionMark(boolean deletionMark) {
+        this.deletionMark = deletionMark;
+    }
 
     public String getGuid() {
         return guid;
