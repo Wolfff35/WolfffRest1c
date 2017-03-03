@@ -1,6 +1,5 @@
 package com.wolff.wolfffrest1c.tools;
 
-import android.util.Log;
 
 import com.wolff.wolfffrest1c.objects.WUsers;
 
@@ -43,9 +42,14 @@ public WUsers getUserByGuid(String guid, ArrayList<WUsers> users){
 }
     public String dateToString(Date date,String strFormat){
         //return DateFormat.getDateTimeInstance().format(date);
+        if(date!=null){
         DateFormat format = new SimpleDateFormat(strFormat, Locale.ENGLISH);
         String strDate = format.format(date);
         return strDate;
+        }else {
+            return "";
+        }
+
 
     }
     public String getStringFromInputStream(InputStream is){

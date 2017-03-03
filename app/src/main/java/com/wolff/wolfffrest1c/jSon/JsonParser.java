@@ -1,6 +1,5 @@
 package com.wolff.wolfffrest1c.jSon;
 
-import android.util.Log;
 
 import com.wolff.wolfffrest1c.objects.WTask;
 import com.wolff.wolfffrest1c.objects.WUsers;
@@ -24,10 +23,13 @@ public class JsonParser {
         String separator = "value";
         ArrayList<WTask> temp = new ArrayList<>();
         Convert convert = new Convert();
+       // Log.e("==","=================================================================================");
+       // Log.e("SERVER DATA = ",""+serverData);
+       // Log.e("==","=================================================================================");
         try {
             JSONObject dataJsonObj= new JSONObject(serverData);
             JSONArray myTasks = dataJsonObj.getJSONArray(separator);
-            for(int i=0;i<=myTasks.length();i++){
+            for(int i=0;i<myTasks.length();i++){
                  JSONObject obj = myTasks.getJSONObject(i);
                 WUsers author = convert.getUserByGuid(obj.getString("Автор_Key"),users);
                 WUsers programmer = convert.getUserByGuid(obj.getString("Исполнитель_Key"),users);
@@ -47,6 +49,7 @@ public class JsonParser {
             }
         } catch (JSONException e) {
             e.getLocalizedMessage();
+            return null;
         }
         return temp;
     }

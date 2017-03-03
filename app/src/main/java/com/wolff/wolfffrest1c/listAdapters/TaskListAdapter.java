@@ -31,7 +31,11 @@ public class TaskListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return myTasks.size();
+        if(myTasks!=null) {
+            return myTasks.size();
+        }else{
+            return 0;
+        }
     }
 
     @Override

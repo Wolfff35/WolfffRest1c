@@ -18,6 +18,15 @@ import android.widget.EditText;
 import com.wolff.wolfffrest1c.R;
 import com.wolff.wolfffrest1c.objects.WTask;
 import com.wolff.wolfffrest1c.objects.WUsers;
+import com.wolff.wolfffrest1c.tasks.PatchDataTask;
+import com.wolff.wolfffrest1c.tasks.PostDataTask;
+import com.wolff.wolfffrest1c.tools.Convert;
+import com.wolff.wolfffrest1c.tools.FormatData;
+
+import java.io.InputStream;
+import java.util.Date;
+
+import static com.wolff.wolfffrest1c.Const.DATE_FORMAT_VID;
 
 
 /**
@@ -30,7 +39,7 @@ public class Fragment_task_item extends Fragment {
    private Boolean isModifiedTask = false;
    private Boolean isEditTask = false;
    private WTask main_taskItem;
-
+    private WUsers main_currentUser;
     EditText edName;
     EditText edId;
     EditText edGuid;
@@ -43,6 +52,8 @@ public class Fragment_task_item extends Fragment {
     EditText edDateClosed;
     CheckBox tvIsInWork;
     CheckBox tvIsClosed;
+
+    Convert convert = new Convert();
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
           this.optionsMenu = menu;
         inflater.inflate(R.menu.fragment_task_item_options_menu, menu);
@@ -66,6 +77,7 @@ public class Fragment_task_item extends Fragment {
                 break;
             case R.id.action_save:
                 Log.e("MENU FRAGM","SAVE");
+                saveTaskToServer();
                 break;
              default:
                 Log.e("MENU FRAGM","DEFAULT");
@@ -86,6 +98,7 @@ public class Fragment_task_item extends Fragment {
         savedInstanceState = this.getArguments();
         if (savedInstanceState != null) {
             main_taskItem =(WTask)savedInstanceState.getSerializable("WTask");
+            main_currentUser = (WUsers) savedInstanceState.getSerializable("WUsers");
              if(main_taskItem==null) {
                 isNewTask=true;
                 isModifiedTask =false;
@@ -105,6 +118,7 @@ public class Fragment_task_item extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
+
     public static Fragment_task_item newInstance(WTask task, WUsers author){
 
         Fragment_task_item fragment = new Fragment_task_item();
@@ -144,13 +158,16 @@ public class Fragment_task_item extends Fragment {
             }
             edText.setText(main_taskItem.getText());
             edPs.setText(main_taskItem.getPs());
-            edDateCreated.setText(main_taskItem.getDateCreate().toString());
-            edDateInWork.setText(main_taskItem.getDateInWork().toString());
-            edDateClosed.setText(main_taskItem.getDateClosed().toString());
+
+             edDateCreated.setText(convert.dateToString(main_taskItem.getDateCreate(),DATE_FORMAT_VID));
+            edDateInWork.setText(convert.dateToString(main_taskItem.getDateInWork(),DATE_FORMAT_VID));
+            edDateClosed.setText(convert.dateToString(main_taskItem.getDateClosed(),DATE_FORMAT_VID));
             tvIsInWork.setChecked(main_taskItem.isInWork());
             tvIsClosed.setChecked(main_taskItem.isClosed());
 
-        }
+        }else {
+             edDateCreated.setText(convert.dateToString(new Date(),DATE_FORMAT_VID));
+         }
         setFormElementVisibility();
         edName.addTextChangedListener(new TextWatcher() {
             @Override
@@ -208,19 +225,64 @@ public class Fragment_task_item extends Fragment {
             item_save.setVisible(isModifiedTask);
         }
     }
-private  void setFormElementVisibility(){
-     edName.setEnabled(isEditTask);
-     edId.setEnabled(false);
-     edGuid.setEnabled(false);
-     edAuthor.setEnabled(false);
-     edProgrammer.setEnabled(false);
-     edText.setEnabled(isEditTask);
-     edPs.setEnabled(isEditTask);
-     edDateCreated.setEnabled(false);
-     edDateInWork.setEnabled(false);
-     edDateClosed.setEnabled(false);
-    tvIsInWork.setEnabled(isEditTask);
-    tvIsClosed.setEnabled(isEditTask);
+    private  void setFormElementVisibility(){
+         edName.setEnabled(isEditTask);
+         edId.setEnabled(false);
+         edGuid.setEnabled(false);
+         edAuthor.setEnabled(false);
+         edProgrammer.setEnabled(false);
+         edText.setEnabled(isEditTask);
+         edPs.setEnabled(isEditTask);
+         edDateCreated.setEnabled(false);
+         edDateInWork.setEnabled(false);
+         edDateClosed.setEnabled(false);
+        tvIsInWork.setEnabled(isEditTask&&!isNewTask);
+        tvIsClosed.setEnabled(isEditTask&&!isNewTask);
 
-}
+    }
+    public void saveTaskToServer(){
+        WUsers author = main_currentUser;
+        WUsers programmer = null;
+        WTask new_main_taskItem;
+        if(edGuid.getText().toString()!="") {
+            new_main_taskItem = new WTask(edGuid.getText().toString(),
+                    edId.getText().toString(),
+                    edName.getText().toString(),
+                    author, programmer,
+                    edText.getText().toString(),
+                    edPs.getText().toString(),
+                    tvIsClosed.isChecked(),
+                    convert.getDateFromString(edDateClosed.getText().toString(), DATE_FORMAT_VID),
+                    tvIsInWork.isChecked(),
+                    convert.getDateFromString(edDateInWork.getText().toString(), DATE_FORMAT_VID),
+                    convert.getDateFromString(edDateCreated.getText().toString(), DATE_FORMAT_VID),
+                    false);
+        }else{
+            new_main_taskItem = new WTask(edName.getText().toString(),
+                    author, programmer,
+                    edText.getText().toString(),
+                    edPs.getText().toString(),
+                    tvIsInWork.isChecked(),
+                    convert.getDateFromString(edDateInWork.getText().toString(), DATE_FORMAT_VID),
+                    convert.getDateFromString(edDateCreated.getText().toString(), DATE_FORMAT_VID));
+
+        }
+        FormatData formatData = new FormatData();
+        if(new_main_taskItem.getGuid().isEmpty()){//New task
+            //Log.e("NEW TASK","NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+             InputStream is = getResources().openRawResource(R.raw.post_query_task);
+            String ss1 = convert.getStringFromInputStream(is);
+            String ss2 = formatData.format_task_post(ss1,new_main_taskItem);
+            PostDataTask pdt = new PostDataTask(getActivity().getApplicationContext());
+            pdt.execute(ss2,"Catalog_Tasks");
+
+        }else{ //UPDATE task
+           if(isModifiedTask) {
+               //Log.e("UPATE TASK","UPDATEEEEEEEEEEEEEEEEEE");
+               String ss = formatData.format_task_patch(getActivity().getApplicationContext(), new_main_taskItem);
+               PatchDataTask patchDataTask = new PatchDataTask(getActivity().getApplicationContext());
+               patchDataTask.execute(ss, "Catalog_Tasks", new_main_taskItem.getGuid(), "");
+           }
+        }
+    }
 }

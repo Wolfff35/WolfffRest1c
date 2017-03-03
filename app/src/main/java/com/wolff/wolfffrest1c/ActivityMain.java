@@ -8,39 +8,33 @@ package com.wolff.wolfffrest1c;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wolff.wolfffrest1c.fragments.Fragment_preference;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_item;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_list;
+import com.wolff.wolfffrest1c.jSon.JsonParser;
 import com.wolff.wolfffrest1c.objects.WTask;
 import com.wolff.wolfffrest1c.objects.WUsers;
-import com.wolff.wolfffrest1c.rest.RESTInvoker;
 import com.wolff.wolfffrest1c.tasks.GetDataTask;
-import com.wolff.wolfffrest1c.tasks.PostDataTask;
-import com.wolff.wolfffrest1c.tools.Convert;
 import com.wolff.wolfffrest1c.tools.FormatData;
 
-import org.json.JSONObject;
 
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import static com.wolff.wolfffrest1c.R.id.fab;
 
 public class ActivityMain extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,Fragment_task_list.FragmentTaskListListener {
@@ -48,22 +42,24 @@ public class ActivityMain extends AppCompatActivity
     Fragment_task_list fragment_task_list;
     Fragment_preference fragment_preferences;
     FloatingActionButton fab;
+    ArrayList<WUsers> main_userList;
+    WUsers main_author;
+    SharedPreferences prefer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        prefer =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //#fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-               //         .setAction("Action", null).show();
-                //передаем данные в фрагмент
-             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null,null);
+                 //передаем данные в фрагмент
+             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null,main_author);
              displayFragment(fragment_task_item);
 
             }
@@ -84,28 +80,43 @@ public class ActivityMain extends AppCompatActivity
         fragment_task_list = new Fragment_task_list();
 
         //ПРОВЕРЯЕМ КОННЕКТ ЕСЛИ НЕТУ - ОТКРЫВАЕМ НАСТРОЙКИ
-        RESTInvoker restInvoker = new RESTInvoker();
-        boolean isConnect = restInvoker.testConnectionIsGood(getApplicationContext());
+        boolean isConnect = false;
+       if(prefer.getString("serverLogin",null)!=null&&prefer.getString("baseName",null)!=null) {
+           GetDataTask getDataTask1 =new GetDataTask(getApplicationContext());
+           String data1CSrv1 = null;
+            try {
+                data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/", "").get();
+                JsonParser parser = new JsonParser();
+                main_userList = parser.getUserListFromServerData(data1CSrv1);
+                FormatData formatData = new FormatData();
+                main_author = formatData.getCurrentUser(main_userList, prefer.getString("serverLogin", ""));
+                isConnect = true;
+            } catch (InterruptedException e) {
+            } catch (ExecutionException e) {
+            }
+        }else{
+
+        }
         Toast toast;
         if(isConnect){
             toast = Toast.makeText(getApplicationContext(),"Подключение к серверу успешно",Toast.LENGTH_LONG);
             toast.show();
+            Bundle args = new Bundle();
+            args.putSerializable("UserList",main_userList);
+            args.putSerializable("Author",main_author);
+            fragment_task_list.setArguments(args);
             displayFragment(fragment_task_list);
         }else {
             toast = Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу. Проверьте настройки",Toast.LENGTH_LONG);
             toast.show();
             displayFragment(fragment_preferences);
         }
-
-        //==================================================================================================
-        Convert convert = new Convert();
-        FormatData formatData = new FormatData();
-        InputStream is = getResources().openRawResource(R.raw.post_query_user);
-        String ss1 = convert.getStringFromInputStream(is);
-        //ss2 = formatData.format_user_post(ss2,new WUsers("REFFFF","IDDDDDD","NAMMMME"));
-        //String ss2 = formatData.format_task_post(ss1, new WTask("NAMME",))
-        //PostDataTask pdt = new PostDataTask(getApplicationContext());
-       // pdt.execute(ss2,"Catalog_Пользователи");
+        //HEADER
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView tvHeader_BaseName = (TextView) headerLayout.findViewById(R.id.tvHeader_baseName);
+        TextView tvHeader_UserName = (TextView) headerLayout.findViewById(R.id.tvHeader_UserName);
+        tvHeader_BaseName.setText("Название 1С базы: "+prefer.getString("baseName",""));
+        tvHeader_UserName.setText("Имя пользователя: "+prefer.getString("serverLogin",""));
 
     }
 
@@ -126,8 +137,11 @@ public class ActivityMain extends AppCompatActivity
              case R.id.action_undo:
                 displayFragment(fragment_task_list);
                 break;
+            case R.id.action_save:
+                //Log.e("MENU ACTIV","SAVE");
+                displayFragment(fragment_task_list);
             default:
-                Log.e("MENU FRAGM","DEFAULT MAIN");
+               // Log.e("MENU FRAGM","DEFAULT MAIN");
                 break;
         }
 
@@ -144,9 +158,8 @@ public class ActivityMain extends AppCompatActivity
             displayFragment(fragment_task_list);
          } else if (id == R.id.nav_settings) {
             displayFragment(fragment_preferences);
-
         } else if (id == R.id.nav_exit) {
-
+            System.exit(0);
         } else if (id == R.id.nav_about) {
         }
 
@@ -155,7 +168,7 @@ public class ActivityMain extends AppCompatActivity
         return true;
     }
     //#fragment
-    private void displayFragment(Fragment fragment){
+    public void displayFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction;
         fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_activity_main,fragment);

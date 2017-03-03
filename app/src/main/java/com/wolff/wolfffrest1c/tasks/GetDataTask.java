@@ -23,13 +23,13 @@ public class GetDataTask extends AsyncTask<String,Void,String> {
             GetData getData = new GetData();
             String data1C = null;
             try {
-                data1C = getData.getDataFromServer(mContext,params[0]);
+                data1C = getData.getDataFromServer(mContext,params[0],params[1]);
             } catch (IOException e) {
                 e.printStackTrace();
                 data1C=null;
             }
-            Log.e("=GetDataTask","params[0] = "+params[0]);
-            Log.e("=GetDataTask","Get = "+data1C);
+            //Log.e("=GetDataTask","params[0] = "+params[0]);
+            //Log.e("=GetDataTask","Get = "+data1C);
               return data1C;
         }
 

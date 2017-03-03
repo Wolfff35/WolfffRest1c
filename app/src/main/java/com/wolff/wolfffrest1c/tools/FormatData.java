@@ -1,9 +1,14 @@
 package com.wolff.wolfffrest1c.tools;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.wolff.wolfffrest1c.objects.WTask;
 import com.wolff.wolfffrest1c.objects.WUsers;
+import com.wolff.wolfffrest1c.rest.RESTInvoker;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,12 +34,28 @@ public class FormatData {
         return finStr;
     }
  */
-    public String format_task_patch(){
+    public String format_task_patch(Context context, WTask task){
         //{
         //    "odata.metadata": "http://13.10.12.10/v83_zadacha/odata/standard.odata/$metadata#Catalog_Пользователи/@Element",
         //        "Description": "?????"
         //}
-        return null;
+        RESTInvoker restInvoker = new RESTInvoker();
+        Convert convert = new Convert();
+        JSONObject object = new JSONObject();
+        try {
+            object.put("odata.metadata",""+restInvoker.getBaseUrl(context)+"$metadata#Catalog_Tasks/@Element");
+            object.put("Description",task.getName());
+            object.put("Содержание",task.getText());
+            object.put("Примечание",task.getPs());
+            object.put("фЗавершена",task.isClosed());
+            object.put("ДатаЗавершения",convert.dateToString(task.getDateClosed(),DATE_FORMAT_STR));
+            object.put("фПринятаВРаботу",task.isInWork());
+            object.put("ДатаПринятияВРаботу",convert.dateToString(task.getDateInWork(),DATE_FORMAT_STR));
+
+        return object.toString();
+        } catch (JSONException e) {
+           return null;
+        }
     }
     public String format_task_post(String taskString, WTask task){
         Convert convert = new Convert();
@@ -54,7 +75,7 @@ public class FormatData {
                                         task.getText(),
                                         task.getPs(),
                                         currDate);
-        Log.e("POST STR",""+finStr);
+        //Log.e("POST STR",""+finStr);
         return finStr;
     }
 

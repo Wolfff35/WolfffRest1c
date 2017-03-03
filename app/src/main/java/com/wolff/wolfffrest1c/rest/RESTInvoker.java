@@ -29,8 +29,8 @@ public class RESTInvoker {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         //String authString = LOGIN + ":" + PASSWORD;
-        Log.e("LOGIN = ",""+sp.getString("serverLogin","wolf"));
-        Log.e("PASS = ",""+sp.getString("serverPassword","1"));
+        //Log.e("LOGIN = ",""+sp.getString("serverLogin","wolf"));
+        //Log.e("PASS = ",""+sp.getString("serverPassword","1"));
         String authString = sp.getString("serverLogin","wolf")+ ":" + sp.getString("serverPassword","1");
         String authStringEnc;
         authStringEnc = new String(Base64.encode(authString.getBytes(),0));
@@ -42,11 +42,11 @@ public class RESTInvoker {
        // String lUrl = "http://"+sp.getString("serverName","13.10.12.10")+"/"+sp.getString("baseName","v83_zadacha")+BASE_URL;
         String lUrl = "http://"+"13.10.12.10"+"/"+"v83_zadacha"+BASE_URL;
         //String lUrl = "http://"+"13.10.12.11"+"/"+"v83_zadacha"+BASE_URL;
-        Log.e("getBaseUrl = ",""+lUrl);
+        //Log.e("getBaseUrl = ",""+lUrl);
         return lUrl;
     }
 
-    public boolean testConnectionIsGood(Context context){
+   /* public boolean testConnectionIsGood(Context context){
         GetDataTask getDataTask = new GetDataTask(context);
         boolean isConn = false;
         try {
@@ -60,5 +60,5 @@ public class RESTInvoker {
             isConn=false;
         }
         return isConn;
-    }
+    }*/
 }

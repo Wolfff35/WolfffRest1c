@@ -8,7 +8,6 @@
 <m:properties xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
 	<d:Description>%2$s</d:Description>
 	<d:Автор_Key>%3$s</d:Автор_Key>
-	<d:Исполнитель_Key>%4$s</d:Исполнитель_Key>
 	<d:Содержание>%5$s</d:Содержание>
 	<d:Примечание>%6$s</d:Примечание>
 	<d:ДатаСоздания>%7$s</d:ДатаСоздания>

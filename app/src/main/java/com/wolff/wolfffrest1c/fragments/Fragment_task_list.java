@@ -2,25 +2,17 @@ package com.wolff.wolfffrest1c.fragments;
 
 import android.app.ListFragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.wolff.wolfffrest1c.R;
 import com.wolff.wolfffrest1c.jSon.JsonParser;
 import com.wolff.wolfffrest1c.listAdapters.TaskListAdapter;
 import com.wolff.wolfffrest1c.objects.WTask;
 import com.wolff.wolfffrest1c.objects.WUsers;
 import com.wolff.wolfffrest1c.tasks.GetDataTask;
-import com.wolff.wolfffrest1c.tasks.PatchDataTask;
-import com.wolff.wolfffrest1c.tasks.PostDataTask;
 import com.wolff.wolfffrest1c.tools.Convert;
-import com.wolff.wolfffrest1c.tools.FormatData;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -63,22 +55,19 @@ public class Fragment_task_list extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        GetDataTask getDataTask1 =new GetDataTask(getActivity().getApplicationContext());
-        GetDataTask getDataTask2 =new GetDataTask(getActivity().getApplicationContext());
-        SharedPreferences prefer =  PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        try {
-            String data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/").get();
-            JsonParser parser = new JsonParser();
-            main_userList=parser.getUserListFromServerData(data1CSrv1);
-            FormatData formatData = new FormatData();
-            main_author = formatData.getCurrentUser(main_userList,prefer.getString("serverLogin",""));
+        Bundle args = getArguments();
+        main_userList = (ArrayList<WUsers>) args.getSerializable("UserList");
+        main_author = (WUsers) args.getSerializable("Author");
 
-            String data1CSrv2 = getDataTask2.execute("Catalog_Tasks/").get();
-            main_taskList=parser.getTaskListFromServerData(data1CSrv2,main_userList);
+         GetDataTask getDataTask2 =new GetDataTask(getActivity().getApplicationContext());
+        try {
+            JsonParser parser = new JsonParser();
+            String data1CSrv2 = getDataTask2.execute("Catalog_Tasks/",main_author.getGuid()).get();
+            main_taskList = parser.getTaskListFromServerData(data1CSrv2, main_userList);
         } catch (InterruptedException e) {
-            Log.e("ERR"," = 1");
+            //Log.e("ERR"," = 1");
         } catch (ExecutionException e) {
-            Log.e("ERR"," = 2");
+            //Log.e("ERR"," = 2");
         }
         Convert convert = new Convert();
  /*       InputStream is = getResources().openRawResource(R.raw.post_query_user);

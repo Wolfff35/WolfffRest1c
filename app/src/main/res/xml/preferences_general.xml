@@ -32,14 +32,14 @@
         <SwitchPreference
             android:defaultValue="false"
             android:title="По ответственному"
-            android:key="iAmAuthor" />
+            android:key="iAmProgrammer" />
         <SwitchPreference
             android:defaultValue="false"
-            android:title="Не помеченные на удаление"
-            android:key="iAmAuthor" />
+            android:title="Только не помеченные на удаление"
+            android:key="notDeleted" />
         <SwitchPreference
             android:defaultValue="false"
-            android:title="Не завершенные"
-            android:key="iAmAuthor" />
+            android:title="Только не завершенные"
+            android:key="notFinished" />
     </PreferenceCategory>
 </PreferenceScreen>
