@@ -11,7 +11,6 @@ import com.wolff.wolfffrest1c.listAdapters.TaskListAdapter;
 import com.wolff.wolfffrest1c.objects.WTask;
 import com.wolff.wolfffrest1c.objects.WUsers;
 import com.wolff.wolfffrest1c.tasks.GetDataTask;
-import com.wolff.wolfffrest1c.tools.Convert;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -35,7 +34,6 @@ public class Fragment_task_list extends ListFragment {
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement onSomeEventListener");
         }
-
     }
 
     @Override
@@ -65,22 +63,8 @@ public class Fragment_task_list extends ListFragment {
             String data1CSrv2 = getDataTask2.execute("Catalog_Tasks/",main_author.getGuid()).get();
             main_taskList = parser.getTaskListFromServerData(data1CSrv2, main_userList);
         } catch (InterruptedException e) {
-            //Log.e("ERR"," = 1");
         } catch (ExecutionException e) {
-            //Log.e("ERR"," = 2");
         }
-        Convert convert = new Convert();
- /*       InputStream is = getResources().openRawResource(R.raw.post_query_user);
-        String ss2 = convert.getStringFromInputStream(is);
-       PostDataTask pdt = new PostDataTask();
-        pdt.execute(ss2,"Catalog_Пользователи");
-*/
-   /*     InputStream inputStream = getResources().openRawResource(R.raw.patch_query_task);
-        String ss3 = convert.getStringFromInputStream(inputStream);
-        PatchDataTask patchDataTask = new PatchDataTask();
-        String dataVersion = "AAAAAAAARmw";
-        patchDataTask.execute(ss3,"Catalog_Пользователи","f4f6d96a-f9ce-11e6-80cb-f2bd425ab9dd",dataVersion);
-*/
     }
 
 
