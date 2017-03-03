@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:shrinkColumns="1"
-    android:id="@+id/tabLayot">
+    android:id="@+id/tabLayot"
+    android:orientation="vertical">
 
-    <TableRow
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
-        android:text="Кратко"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvName" />
+            android:text="Кратко"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvName" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
             android:layout_span="2"
             android:id="@+id/edName" />
-    </TableRow>
 
-    <TableRow>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:text="Код"
@@ -40,73 +46,56 @@
             android:ems="10"
             android:id="@+id/edId" />
 
-    </TableRow>
-    <TableRow>
+    </LinearLayout>
 
-        <TextView
-            android:text="GUID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvGuid" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/edGuid" />
-
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:text="Автор"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvAuthor" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/edAuthor" />
-
-    </TableRow>
-    <TableRow>
         <TextView
             android:text="Исполнитель"
-            android:layout_width="wrap_content"
+            android:layout_width="42dp"
             android:layout_height="wrap_content"
             android:id="@+id/tvProgrammer" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
             android:ems="10"
-            android:id="@+id/edProgrammer" />
+            android:id="@+id/edProgrammer"
+            android:layout_weight="1" />
 
-    </TableRow>
-    <TableRow>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
             android:text="Описание"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvText" />
+            android:id="@+id/tvText"
+            android:layout_weight="1" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
             android:ems="10"
-            android:id="@+id/edText" />
+            android:id="@+id/edText"
+            android:layout_weight="1" />
 
-    </TableRow>
-    <TableRow>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <TextView
             android:text="Примечание"
             android:layout_width="wrap_content"
@@ -114,63 +103,126 @@
             android:id="@+id/tvPs" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
             android:ems="10"
             android:id="@+id/edPs" />
 
-    </TableRow>
-    <TableRow>
-        <TextView
-            android:text="Дата создания"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvDateCreated" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/edDateCreated" />
+    </LinearLayout>
 
-    </TableRow>
-    <TableRow>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <CheckBox
             android:text="В работе"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvIsInWork" />
+            android:id="@+id/tvIsInWork"
+            android:layout_weight="1" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
             android:ems="10"
-            android:id="@+id/edDateInWork" />
+            android:id="@+id/edDateInWork"
+            android:layout_weight="1" />
+    </LinearLayout>
 
-    </TableRow>
-    <TableRow>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <CheckBox
             android:text="Завершена"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvIsClosed" />
+            android:id="@+id/tvIsClosed"
+            android:layout_weight="1" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:text=""
             android:ems="10"
-            android:id="@+id/edDateClosed" />
+            android:id="@+id/edDateClosed"
+            android:layout_weight="1" />
+    </LinearLayout>
 
-    </TableRow>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-</TableLayout>
+        <TextView
+            android:text="Автор"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvAuthor"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/edAuthor"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Дата создания"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvDateCreated"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/edDateCreated"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="GUID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvGuid"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text=""
+            android:ems="10"
+            android:id="@+id/edGuid"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
