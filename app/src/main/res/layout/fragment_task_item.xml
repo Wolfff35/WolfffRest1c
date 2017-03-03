@@ -55,7 +55,7 @@
 
         <TextView
             android:text="Исполнитель"
-            android:layout_width="42dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:id="@+id/tvProgrammer" />
 
@@ -77,10 +77,9 @@
 
         <TextView
             android:text="Описание"
-            android:layout_width="wrap_content"
+            android:layout_width="81dp"
             android:layout_height="wrap_content"
-            android:id="@+id/tvText"
-            android:layout_weight="1" />
+            android:id="@+id/tvText" />
 
         <EditText
             android:layout_width="match_parent"
@@ -120,7 +119,7 @@
 
         <CheckBox
             android:text="В работе"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvIsInWork"
             android:layout_weight="1" />
@@ -142,7 +141,7 @@
 
         <CheckBox
             android:text="Завершена"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvIsClosed"
             android:layout_weight="1" />
@@ -164,7 +163,7 @@
 
         <TextView
             android:text="Автор"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvAuthor"
             android:layout_weight="1" />
@@ -186,7 +185,7 @@
 
         <TextView
             android:text="Дата создания"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvDateCreated"
             android:layout_weight="1" />
@@ -208,7 +207,7 @@
 
         <TextView
             android:text="GUID"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tvGuid"
             android:layout_weight="1" />
