@@ -12,9 +12,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.wolff.wolfffrest1c.R;
 import com.wolff.wolfffrest1c.objects.WTask;
@@ -25,8 +28,10 @@ import com.wolff.wolfffrest1c.tools.Convert;
 import com.wolff.wolfffrest1c.tools.FormatData;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
+import static android.R.layout.simple_list_item_1;
 import static com.wolff.wolfffrest1c.Const.DATE_FORMAT_VID;
 
 
@@ -40,12 +45,13 @@ public class Fragment_task_item extends Fragment {
    private Boolean isModifiedTask = false;
    private Boolean isEditTask = false;
    private WTask main_taskItem;
+    private ArrayList<WUsers> main_userList;
     private WUsers main_currentUser;
     EditText edName;
     EditText edId;
     EditText edGuid;
     EditText edAuthor;
-    EditText edProgrammer;
+    Spinner edProgrammer;
     EditText edText;
     EditText edPs;
     EditText edDateCreated;
@@ -100,7 +106,9 @@ public class Fragment_task_item extends Fragment {
         if (savedInstanceState != null) {
             main_taskItem =(WTask)savedInstanceState.getSerializable("WTask");
             main_currentUser = (WUsers) savedInstanceState.getSerializable("WUsers");
-             if(main_taskItem==null) {
+            //Bundle args = getArguments();
+            main_userList = (ArrayList<WUsers>) savedInstanceState.getSerializable("UserList");
+            if(main_taskItem==null) {
                 isNewTask=true;
                 isModifiedTask =false;
                 isEditTask = true;
@@ -121,12 +129,13 @@ public class Fragment_task_item extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    public static Fragment_task_item newInstance(WTask task, WUsers author){
+    public static Fragment_task_item newInstance(WTask task, WUsers author,ArrayList<WUsers> userList){
 
         Fragment_task_item fragment = new Fragment_task_item();
         Bundle bundle = new Bundle();
         bundle.putSerializable("WTask",task);
         bundle.putSerializable("WUsers",author);
+        bundle.putSerializable("UserList",userList);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -138,7 +147,7 @@ public class Fragment_task_item extends Fragment {
         edName = (EditText) view.findViewById(R.id.edName);
         edId= (EditText) view.findViewById(R.id.edId);
         edGuid= (EditText) view.findViewById(R.id.edGuid);
-        edProgrammer= (EditText) view.findViewById(R.id.edProgrammer);
+        edProgrammer= (Spinner) view.findViewById(R.id.edProgrammer);
         edText= (EditText) view.findViewById(R.id.edText);
         edPs= (EditText) view.findViewById(R.id.edPs);
         edDateCreated= (EditText) view.findViewById(R.id.edDateCreated);
@@ -147,7 +156,17 @@ public class Fragment_task_item extends Fragment {
         tvIsInWork = (CheckBox) view.findViewById(R.id.tvIsInWork);
         tvIsClosed = (CheckBox) view.findViewById(R.id.tvIsClosed);
 
-        CompoundButton.OnCheckedChangeListener ochlIsClosed = new CompoundButton.OnCheckedChangeListener() {
+        String[] proggramers = new String[main_userList.size()];
+       //main_userList.toArray(proggramers);
+        int i=0;
+        for(WUsers us:main_userList){
+            proggramers[i]=us.getName();i++;
+        }
+          //ArrayAdapter<String> adapter  =  new  ArrayAdapter<String>(getActivity(), simple_list_item_1, new  String[]{"Рыжик", "Барсик", "Мурзик"});
+        ArrayAdapter<String> adapter  =  new  ArrayAdapter<String>(getActivity(), simple_list_item_1, proggramers);
+        edProgrammer.setAdapter(adapter);
+
+       CompoundButton.OnCheckedChangeListener ochlIsClosed = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -179,7 +198,7 @@ public class Fragment_task_item extends Fragment {
             edGuid.setText(main_taskItem.getGuid());
 
             if(main_taskItem.getProgrammer()!=null) {
-                edProgrammer.setText(main_taskItem.getProgrammer().getName());
+                //TODO edProgrammer.setText(main_taskItem.getProgrammer().getName());
             }
             edText.setText(main_taskItem.getText());
             edPs.setText(main_taskItem.getPs());
@@ -259,7 +278,7 @@ public class Fragment_task_item extends Fragment {
          edId.setEnabled(false);
          edGuid.setEnabled(false);
          edAuthor.setEnabled(false);
-         edProgrammer.setEnabled(false);
+         edProgrammer.setEnabled(isEditTask);
          edText.setEnabled(isEditTask);
          edPs.setEnabled(isEditTask);
          edDateCreated.setEnabled(false);

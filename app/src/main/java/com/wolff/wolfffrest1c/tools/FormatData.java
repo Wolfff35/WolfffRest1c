@@ -83,9 +83,18 @@ public class FormatData {
         return finStr;
     }
 
-    public WUsers getCurrentUser(ArrayList<WUsers>users,String userUID){
+    public WUsers getCurrentUserByUid(ArrayList<WUsers>users,String userUID){
         for (int i=0;i<users.size();i++){
             if (users.get(i).getuID().equalsIgnoreCase(userUID)){
+                return users.get(i);
+            }
+        }
+        return null;
+
+    }
+    public WUsers getCurrentUserByGuid(ArrayList<WUsers>users,String userGUID){
+        for (int i=0;i<users.size();i++){
+            if (users.get(i).getGuid().equals(userGUID)){
                 return users.get(i);
             }
         }

@@ -56,15 +56,13 @@ public class ActivityMain extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-     //  prefer =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
         //#fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                  //передаем данные в фрагмент
-             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null,main_author);
+             Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(null,main_author,main_userList);
              displayFragment(fragment_task_item);
 
             }
@@ -174,7 +172,7 @@ public class ActivityMain extends AppCompatActivity
                 if(data1CSrv1!=null) {
                     main_userList = parser.getUserListFromServerData(data1CSrv1);
                     FormatData formatData = new FormatData();
-                    main_author = formatData.getCurrentUser(main_userList, prefer.getString("serverLogin", ""));
+                    main_author = formatData.getCurrentUserByUid(main_userList, prefer.getString("serverLogin", ""));
                     isConnect = true;
                 }
             } catch (InterruptedException e) {
@@ -200,6 +198,6 @@ public class ActivityMain extends AppCompatActivity
     }
     @Override
     public void onTaskSelected(WTask task,WUsers author) {
-        Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(task,author);
+        Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(task,author,main_userList);
         displayFragment(fragment_task_item);    }
 }
