@@ -23,7 +23,8 @@ public class PatchData {
             int responseCode=0;
             HttpURLConnection conn=null;
             RESTInvoker restInvoker = new RESTInvoker();
-            try {
+            Log.e("DATA = ",""+data);
+             try {
                 URL url = new URL(restInvoker.getBaseUrl(context)+catalog+"(guid'"+guid+"')?$format=json");
                 conn = restInvoker.getConnection(context,url);
                 conn.setReadTimeout(READ_TIMEOUT);
@@ -31,7 +32,7 @@ public class PatchData {
                 conn.setRequestMethod("PATCH");
                 conn.setDoOutput(true);
                 conn.setDoInput(true);
-                conn.setRequestProperty("If-Match", ""+dataVersion);
+                //conn.setRequestProperty("If-Match", ""+dataVersion);
                 conn.setRequestProperty("Content-Length", "" + Integer.toString(data.getBytes().length));
 
                 OutputStream os= new BufferedOutputStream(conn.getOutputStream());
@@ -41,17 +42,17 @@ public class PatchData {
 
                 responseCode= conn.getResponseCode();
                  if ((responseCode >= 200)&&(responseCode<=203)) {
-                    Log.e("SUCCESS","code= "+responseCode);
+                   // Log.e("SUCCESS","code= "+responseCode);
                 }else if (responseCode==412) {
                      //Данные изменились в процессе
-                     Log.e("SERVER_ERROR","code== "+responseCode);
+                   //  Log.e("SERVER_ERROR","code== "+responseCode);
                  }else{
-                    Log.e("SERVER_ERROR","code== "+responseCode);
+                   // Log.e("SERVER_ERROR","code== "+responseCode);
                 }
             } catch (MalformedURLException e) {
-                //Log.e("!!!!!!"," 2 ");
+               // Log.e("!!!!!!"," 2 ");
             } catch (IOException e) {
-                //Log.e("!!!!!!"," 3==== "+e.getLocalizedMessage()+"\n"+e.getMessage()+"\n"+e.fillInStackTrace().toString());
+               // Log.e("!!!!!!"," 3==== "+e.getLocalizedMessage());
             }finally {
 
                 conn.disconnect();

@@ -2,10 +2,15 @@ package com.wolff.wolfffrest1c.fragments;
 
 import android.app.ListFragment;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.drawable.DrawerArrowDrawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.wolff.wolfffrest1c.R;
 import com.wolff.wolfffrest1c.jSon.JsonParser;
 import com.wolff.wolfffrest1c.listAdapters.TaskListAdapter;
 import com.wolff.wolfffrest1c.objects.WTask;
@@ -42,6 +47,9 @@ public class Fragment_task_list extends ListFragment {
         Context context = getActivity().getApplicationContext();
         taskListAdapter= new TaskListAdapter(context,main_taskList);
         setListAdapter(taskListAdapter);
+        int[] colors = {0,ContextCompat.getColor(getContext(),R.color.colorPrimary),0};
+        getListView().setDivider(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors));
+        getListView().setDividerHeight(5);
         getListView().setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -62,6 +70,7 @@ public class Fragment_task_list extends ListFragment {
             JsonParser parser = new JsonParser();
             String data1CSrv2 = getDataTask2.execute("Catalog_Tasks/",main_author.getGuid()).get();
             main_taskList = parser.getTaskListFromServerData(data1CSrv2, main_userList);
+            //Log.e("onCreateFRAGM",""+main_taskList.size()+", "+main_taskList.toString());
         } catch (InterruptedException e) {
         } catch (ExecutionException e) {
         }

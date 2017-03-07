@@ -48,12 +48,16 @@ public class FormatData {
             object.put("Содержание",task.getText());
             object.put("Примечание",task.getPs());
             object.put("фЗавершена",task.isClosed());
-            object.put("ДатаЗавершения",convert.dateToString(task.getDateClosed(),DATE_FORMAT_STR));
+            if((task.isClosed())&&(task.getDateClosed()!=null)) {
+                object.put("ДатаЗавершения", convert.dateToString(task.getDateClosed(), DATE_FORMAT_STR));
+            }
             object.put("фПринятаВРаботу",task.isInWork());
-            object.put("ДатаПринятияВРаботу",convert.dateToString(task.getDateInWork(),DATE_FORMAT_STR));
-
+            if((task.isInWork())&&(task.getDateInWork()!=null)) {
+                object.put("ДатаПринятияВРаботу", convert.dateToString(task.getDateInWork(), DATE_FORMAT_STR));
+            }
         return object.toString();
         } catch (JSONException e) {
+            Log.e("ERROE"," = "+e.getLocalizedMessage());
            return null;
         }
     }

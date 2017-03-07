@@ -26,6 +26,9 @@ public class JsonParser {
        // Log.e("==","=================================================================================");
        // Log.e("SERVER DATA = ",""+serverData);
        // Log.e("==","=================================================================================");
+        if(serverData==null){
+            return null;
+        }
         try {
             JSONObject dataJsonObj= new JSONObject(serverData);
             JSONArray myTasks = dataJsonObj.getJSONArray(separator);
@@ -49,6 +52,7 @@ public class JsonParser {
             }
         } catch (JSONException e) {
             e.getLocalizedMessage();
+            //temp.add(null);
             return null;
         }
         return temp;

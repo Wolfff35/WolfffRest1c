@@ -3,6 +3,7 @@ package com.wolff.wolfffrest1c.rest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class GetData {
         RESTInvoker restInvoker = new RESTInvoker();
         StringBuilder sb = new StringBuilder();
             URL url = new URL(restInvoker.getBaseUrl(context) + catalog+"?$format=json"+getFiltersForQuery(context,catalog,guidCurrentUser));
+            Log.e("URL = ",""+restInvoker.getBaseUrl(context) + catalog+"?$format=json"+getFiltersForQuery(context,catalog,guidCurrentUser));
             HttpURLConnection urlConnection = restInvoker.getConnection(context,url);
             urlConnection.setReadTimeout(READ_TIMEOUT);
             urlConnection.setConnectTimeout(CONNECT_TIMEOUT);
@@ -34,7 +36,7 @@ public class GetData {
             }
             reader.close();
             urlConnection.disconnect();
-            //Log.e("GET",""+sb.toString());
+            Log.e("GET",""+sb.toString());
             return sb.toString();
      }
 
@@ -56,6 +58,11 @@ public class GetData {
         if(catalog.equalsIgnoreCase("Catalog_Пользователи/")){
         return "";
        }else if(catalog.equalsIgnoreCase("Catalog_Tasks/")){
+            Log.e("GET FILTER","iAmAuthor = "+iAmAuthor);
+            Log.e("GET FILTER","iAmProgrammer = "+iAmProgrammer);
+            Log.e("GET FILTER","notDeleted = "+notDeleted);
+            Log.e("GET FILTER","notFinished = "+notFinished);
+
             if(iAmAuthor|iAmProgrammer|notDeleted|notFinished){
                 //hasFilter=true;
                 sb.append("&$filter=");
@@ -64,27 +71,29 @@ public class GetData {
             }
             if (iAmAuthor){
                 isFirst=true;
-                sb.append("Автор_Key eq guid'"+guidCurrentUser+"'");
+                sb.append("Автор_Key%20eq%20guid'"+guidCurrentUser+"'");
             }
             if (iAmProgrammer){
                 if(isFirst){
-                    sb.append(" and ");
+                    sb.append("%20and%20");
                 }
-                sb.append("Исполнитель_Key eq guid'"+guidCurrentUser+"'");
+                isFirst=true;
+                sb.append("Исполнитель_Key%20eq%20guid'"+guidCurrentUser+"'");
             }
             if (notDeleted){
                 if(isFirst){
-                    sb.append(" and ");
+                    sb.append("%20and%20");
                 }
-                sb.append("DeletionMark eq false");
+                isFirst=true;
+                sb.append("DeletionMark%20eq%20false");
             }
             if (notFinished){
                 if(isFirst){
-                    sb.append(" and ");
+                    sb.append("%20and%20");
                 }
-                sb.append("фЗавершена eq false");
+                sb.append("фЗавершена%20eq%20false");
             }
-            //Log.e("GET FILTER",""+sb.toString());
+            Log.e("GET FILTER",""+sb.toString());
             return  sb.toString();
        }
         return "";

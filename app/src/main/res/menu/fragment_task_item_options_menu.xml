@@ -31,6 +31,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:title="Удалить"
         app:showAsAction="always"
         android:icon="@drawable/ic_delete"
-        android:visible="true"
+        android:visible="false"
         android:enabled="true" />
  </menu>

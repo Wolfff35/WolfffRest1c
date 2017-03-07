@@ -28,6 +28,7 @@ public class Convert {
             date = format.parse(strDate);
         } catch (ParseException e) {
             e.printStackTrace();
+            date = null;
         }
         System.out.println(date);
         return date;

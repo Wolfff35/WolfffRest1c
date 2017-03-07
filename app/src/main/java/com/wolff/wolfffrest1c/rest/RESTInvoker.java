@@ -39,9 +39,9 @@ public class RESTInvoker {
     }
     public String getBaseUrl(Context context){
         sp = PreferenceManager.getDefaultSharedPreferences(context);
-       // String lUrl = "http://"+sp.getString("serverName","13.10.12.10")+"/"+sp.getString("baseName","v83_zadacha")+BASE_URL;
-        String lUrl = "http://"+"13.10.12.10"+"/"+"v83_zadacha"+BASE_URL;
-        //String lUrl = "http://"+"13.10.12.11"+"/"+"v83_zadacha"+BASE_URL;
+        String lUrl = "http://"+sp.getString("serverName","13.10.12.10")+"/"+sp.getString("baseName","v83_zadacha")+BASE_URL;
+        //GOOD String lUrl = "http://"+"13.10.12.10"+"/"+"v83_zadacha"+BASE_URL;
+        //BAD String lUrl = "http://"+"13.10.12.11"+"/"+"v83_zadacha"+BASE_URL;
         //Log.e("getBaseUrl = ",""+lUrl);
         return lUrl;
     }

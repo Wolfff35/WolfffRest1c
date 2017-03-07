@@ -8,15 +8,18 @@ package com.wolff.wolfffrest1c;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.internal.NavigationMenuView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,13 +48,15 @@ public class ActivityMain extends AppCompatActivity
     ArrayList<WUsers> main_userList;
     WUsers main_author;
     SharedPreferences prefer;
+    boolean isConnect;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Toast toast;
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        prefer =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+     //  prefer =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         //#fab
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -69,48 +74,20 @@ public class ActivityMain extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+        navMenuView.addItemDecoration(new DividerItemDecoration(ActivityMain.this, DividerItemDecoration.HORIZONTAL));
+        //navigationView.getMenu().
         //#fragment
         fragment_preferences = new Fragment_preference();
         fragment_task_list = new Fragment_task_list();
 
         //ПРОВЕРЯЕМ КОННЕКТ ЕСЛИ НЕТУ - ОТКРЫВАЕМ НАСТРОЙКИ
-        boolean isConnect = false;
-       if(prefer.getString("serverLogin",null)!=null&&prefer.getString("baseName",null)!=null) {
-           GetDataTask getDataTask1 =new GetDataTask(getApplicationContext());
-           String data1CSrv1 = null;
-            try {
-                data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/", "").get();
-                JsonParser parser = new JsonParser();
-                main_userList = parser.getUserListFromServerData(data1CSrv1);
-                FormatData formatData = new FormatData();
-                main_author = formatData.getCurrentUser(main_userList, prefer.getString("serverLogin", ""));
-                isConnect = true;
-            } catch (InterruptedException e) {
-            } catch (ExecutionException e) {
-            }
-        }else{
-
-        }
-        Toast toast;
-        if(isConnect){
-            toast = Toast.makeText(getApplicationContext(),"Подключение к серверу успешно",Toast.LENGTH_LONG);
-            toast.show();
-            Bundle args = new Bundle();
-            args.putSerializable("UserList",main_userList);
-            args.putSerializable("Author",main_author);
-            fragment_task_list.setArguments(args);
-            displayFragment(fragment_task_list);
-        }else {
-            toast = Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу. Проверьте настройки",Toast.LENGTH_LONG);
-            toast.show();
-            displayFragment(fragment_preferences);
-        }
+        isConnect = connectAndGetUsers();
         //HEADER
         View headerLayout = navigationView.getHeaderView(0);
         TextView tvHeader_BaseName = (TextView) headerLayout.findViewById(R.id.tvHeader_baseName);
@@ -155,7 +132,11 @@ public class ActivityMain extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_tasks) {
-            displayFragment(fragment_task_list);
+            if(!isConnect){
+                isConnect=connectAndGetUsers();
+            }else {
+                displayFragment(fragment_task_list);
+            }
          } else if (id == R.id.nav_settings) {
             displayFragment(fragment_preferences);
         } else if (id == R.id.nav_exit) {
@@ -180,6 +161,43 @@ public class ActivityMain extends AppCompatActivity
         }
     }
 
+    public boolean connectAndGetUsers(){
+        boolean isConnect = false;
+        Toast toast;
+        prefer =  PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if(prefer.getString("serverLogin",null)!=null&&prefer.getString("baseName",null)!=null) {
+            GetDataTask getDataTask1 =new GetDataTask(getApplicationContext());
+            String data1CSrv1 = null;
+            try {
+                data1CSrv1 = getDataTask1.execute("Catalog_Пользователи/", "").get();
+                JsonParser parser = new JsonParser();
+                if(data1CSrv1!=null) {
+                    main_userList = parser.getUserListFromServerData(data1CSrv1);
+                    FormatData formatData = new FormatData();
+                    main_author = formatData.getCurrentUser(main_userList, prefer.getString("serverLogin", ""));
+                    isConnect = true;
+                }
+            } catch (InterruptedException e) {
+            } catch (ExecutionException e) {
+            }
+        }else{
+
+        }
+        if(isConnect){
+            toast = Toast.makeText(getApplicationContext(),"Подключение к серверу успешно",Toast.LENGTH_LONG);
+            toast.show();
+            Bundle args = new Bundle();
+            args.putSerializable("UserList",main_userList);
+            args.putSerializable("Author",main_author);
+            fragment_task_list.setArguments(args);
+            displayFragment(fragment_task_list);
+        }else {
+            toast = Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу. Проверьте настройки",Toast.LENGTH_LONG);
+            toast.show();
+            displayFragment(fragment_preferences);
+        }
+        return isConnect;
+    }
     @Override
     public void onTaskSelected(WTask task,WUsers author) {
         Fragment_task_item fragment_task_item = Fragment_task_item.newInstance(task,author);

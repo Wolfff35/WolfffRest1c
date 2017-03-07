@@ -3,6 +3,7 @@ package com.wolff.wolfffrest1c.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.wolff.wolfffrest1c.rest.GetData;
 
@@ -36,6 +37,14 @@ public class GetDataTask extends AsyncTask<String,Void,String> {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Toast toast;
+            if(s!=null) {
+                toast = Toast.makeText(mContext, "Данные обновлены", Toast.LENGTH_LONG);
+            }else {
+                toast = Toast.makeText(mContext, "Не получилось обновить данные с сервера", Toast.LENGTH_LONG);
+            }
+            toast.show();
+
         }
     }
 

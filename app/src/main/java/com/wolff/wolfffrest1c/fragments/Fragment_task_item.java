@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.wolff.wolfffrest1c.R;
@@ -112,6 +113,7 @@ public class Fragment_task_item extends Fragment {
 
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -145,7 +147,30 @@ public class Fragment_task_item extends Fragment {
         tvIsInWork = (CheckBox) view.findViewById(R.id.tvIsInWork);
         tvIsClosed = (CheckBox) view.findViewById(R.id.tvIsClosed);
 
-         if(main_taskItem!=null) {
+        CompoundButton.OnCheckedChangeListener ochlIsClosed = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    edDateClosed.setText(convert.dateToString(new Date(),DATE_FORMAT_VID));
+                }else{
+                    edDateClosed.setText("");
+                }
+            }
+        };
+        tvIsClosed.setOnCheckedChangeListener(ochlIsClosed);
+        CompoundButton.OnCheckedChangeListener ochlIsInWork = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    edDateInWork.setText(convert.dateToString(new Date(),DATE_FORMAT_VID));
+                }else{
+                    edDateInWork.setText("");
+                }
+            }
+        };
+        tvIsInWork.setOnCheckedChangeListener(ochlIsInWork);
+
+         if((main_taskItem!=null)) {
             if(main_taskItem.getAuthor()!=null) {
                 edAuthor.setText(main_taskItem.getAuthor().getName());
             }
@@ -158,10 +183,14 @@ public class Fragment_task_item extends Fragment {
             }
             edText.setText(main_taskItem.getText());
             edPs.setText(main_taskItem.getPs());
-
+            Date zeroDate = new Date(1,1,1,0,0,0);
              edDateCreated.setText(convert.dateToString(main_taskItem.getDateCreate(),DATE_FORMAT_VID));
-            edDateInWork.setText(convert.dateToString(main_taskItem.getDateInWork(),DATE_FORMAT_VID));
-            edDateClosed.setText(convert.dateToString(main_taskItem.getDateClosed(),DATE_FORMAT_VID));
+            if((main_taskItem.getDateInWork()!=null)&&(main_taskItem.getDateInWork().getTime()>zeroDate.getTime())) {
+                edDateInWork.setText(convert.dateToString(main_taskItem.getDateInWork(), DATE_FORMAT_VID));
+            }
+            if((main_taskItem.getDateClosed()!=null)&&(main_taskItem.getDateClosed().getTime()>zeroDate.getTime())) {
+                edDateClosed.setText(convert.dateToString(main_taskItem.getDateClosed(), DATE_FORMAT_VID));
+            }
             tvIsInWork.setChecked(main_taskItem.isInWork());
             tvIsClosed.setChecked(main_taskItem.isClosed());
 

@@ -2,6 +2,7 @@ package com.wolff.wolfffrest1c.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.wolff.wolfffrest1c.rest.PostData;
 
@@ -24,6 +25,13 @@ public class PostDataTask extends AsyncTask<String,Void,String>{
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            Toast toast;
+            if((s.equalsIgnoreCase("200"))|(s.equalsIgnoreCase("201"))) {
+                toast = Toast.makeText(mContext, "Запись успешно сохранена", Toast.LENGTH_LONG);
+            }else {
+                toast = Toast.makeText(mContext, "Не удалось сохранить запись", Toast.LENGTH_LONG);
+            }
+            toast.show();
         }
     }
 

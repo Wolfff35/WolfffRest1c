@@ -31,6 +31,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:visibility="invisible"
         android:layout_height="wrap_content">
 
         <TextView
@@ -54,28 +55,6 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="Исполнитель"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvProgrammer" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:text=""
-            android:ems="10"
-            android:id="@+id/edProgrammer"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
             android:text="Описание"
             android:layout_width="81dp"
             android:layout_height="wrap_content"
@@ -83,12 +62,11 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:layout_height="138dp"
+            android:inputType="textMultiLine"
             android:text=""
             android:ems="10"
-            android:id="@+id/edText"
-            android:layout_weight="1" />
+            android:id="@+id/edText" />
 
     </LinearLayout>
     <LinearLayout
@@ -103,8 +81,8 @@
 
         <EditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:layout_height="119dp"
+            android:inputType="textMultiLine"
             android:text=""
             android:ems="10"
             android:id="@+id/edPs" />
@@ -198,6 +176,28 @@
             android:ems="10"
             android:id="@+id/edDateCreated"
             android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvProgrammer"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:text="Исполнитель" />
+
+        <EditText
+            android:id="@+id/edProgrammer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="" />
+
     </LinearLayout>
 
     <LinearLayout
