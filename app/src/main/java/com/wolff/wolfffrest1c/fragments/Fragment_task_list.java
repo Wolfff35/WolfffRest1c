@@ -47,7 +47,7 @@ public class Fragment_task_list extends ListFragment {
         Context context = getActivity().getApplicationContext();
         taskListAdapter= new TaskListAdapter(context,main_taskList);
         setListAdapter(taskListAdapter);
-        int[] colors = {0,ContextCompat.getColor(getContext(),R.color.colorPrimary),0};
+        int[] colors = {0,ContextCompat.getColor(context,R.color.colorPrimary),0};
         getListView().setDivider(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors));
         getListView().setDividerHeight(5);
         getListView().setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
