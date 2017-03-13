@@ -5,8 +5,6 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
