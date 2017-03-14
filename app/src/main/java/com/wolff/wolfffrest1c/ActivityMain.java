@@ -8,7 +8,6 @@ package com.wolff.wolfffrest1c;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -35,7 +35,6 @@ import com.wolff.wolfffrest1c.objects.WUsers;
 import com.wolff.wolfffrest1c.tasks.GetDataTask;
 import com.wolff.wolfffrest1c.tools.FormatData;
 
-
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -49,6 +48,7 @@ public class ActivityMain extends AppCompatActivity
     WUsers main_author;
     SharedPreferences prefer;
     boolean isConnect;
+    Menu nav_menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +79,7 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
         navMenuView.addItemDecoration(new DividerItemDecoration(ActivityMain.this, DividerItemDecoration.HORIZONTAL));
+        nav_menu = navigationView.getMenu();
         //navigationView.getMenu().
         //#fragment
         fragment_preferences = new Fragment_preference();
@@ -193,6 +194,7 @@ public class ActivityMain extends AppCompatActivity
             toast = Toast.makeText(getApplicationContext(),"Не удалось подключиться к серверу. Проверьте настройки",Toast.LENGTH_LONG);
             toast.show();
             displayFragment(fragment_preferences);
+            nav_menu.getItem(1).setChecked(true);
         }
         return isConnect;
     }
