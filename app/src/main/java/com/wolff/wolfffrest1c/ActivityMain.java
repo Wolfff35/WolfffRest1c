@@ -80,7 +80,6 @@ public class ActivityMain extends AppCompatActivity
         NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
         navMenuView.addItemDecoration(new DividerItemDecoration(ActivityMain.this, DividerItemDecoration.HORIZONTAL));
         nav_menu = navigationView.getMenu();
-        //navigationView.getMenu().
         //#fragment
         fragment_preferences = new Fragment_preference();
         fragment_task_list = new Fragment_task_list();
