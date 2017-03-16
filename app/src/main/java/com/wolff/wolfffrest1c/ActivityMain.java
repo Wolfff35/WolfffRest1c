@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wolff.wolfffrest1c.fragments.Fragment_logo;
 import com.wolff.wolfffrest1c.fragments.Fragment_preference;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_item;
 import com.wolff.wolfffrest1c.fragments.Fragment_task_list;
@@ -52,7 +53,8 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast toast;
+ //       Toast toast;
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +85,9 @@ public class ActivityMain extends AppCompatActivity
         //#fragment
         fragment_preferences = new Fragment_preference();
         fragment_task_list = new Fragment_task_list();
+
+        Fragment_logo fragment_logo = new Fragment_logo();
+        displayFragment(fragment_logo);
 
         //ПРОВЕРЯЕМ КОННЕКТ ЕСЛИ НЕТУ - ОТКРЫВАЕМ НАСТРОЙКИ
         isConnect = connectAndGetUsers();
